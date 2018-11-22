@@ -4,13 +4,19 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>The Diamond Group</title>
+    <title>Register!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+    <style>
+        body {
+            background: black;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,9 +55,22 @@
     </div>
     <hr>
 
+    <center><span>We guarantee you will enjoy playing this game!<hr><video width="320" height="240" controls loop>
+            <source src="Kirby Star Gif.mp4" type="video/mp4"></video></span></center>
+    
+    <hr>
+
     <form>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">First and last name</span>
+            </div>
+            <input type="text" aria-label="First name" class="form-control">
+            <input type="text" aria-label="Last name" class="form-control">
+        </div>
+
         <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
+            <label for="exampleInputEmail1">Desired Email Address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
@@ -64,14 +83,29 @@
         <div class="form-group">
             <label for="exampleInputPassword1">Retype Desired Password</label>
             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Verify Password">
+        </div><br>
+
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Region-</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01">
+                <option selected>Select...</option>
+                <option value="1">NA</option>
+                <option value="2">EU</option>
+                <!-- <option value="3">Three</option> -->
+            </select>
         </div>
 
         <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">By Checking This Box, I Agree to The <a href="#"><ins><font color="red">Terms of Service</font></ins></a></label>
+            <label class="form-check-label" for="exampleCheck1">By Checking This Box, I Agree to The <a href="#"><ins>
+                        <font color="red">Terms of Service</font>
+                    </ins></a></label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button> <!--Color needs to be white-->
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <!--Color needs to be white-->
     </form>
 
 
