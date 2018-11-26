@@ -50,63 +50,71 @@
 
     <div class="container-fluid">
         <center>
-            <h1><ins>Register Today!</ins></h1>
+            <h1><ins><font color="white">Register Today!</font></ins></h1>
         </center>
     </div>
     <hr>
 
-    <center><span>We guarantee you will enjoy playing this game!<hr><video width="320" height="240" controls loop>
-            <source src="Kirby Star Gif.mp4" type="video/mp4"></video></span></center>
-    
+    <center><span><font color="white">We guarantee you will enjoy playing this game!</font>
+            <hr><video width="320" height="240" controls loop>
+                <source src="Kirby Star Gif.mp4" type="video/mp4"></video></span></center>
+
     <hr>
+    <div class="row">
+        <div class="col-md-8">
+            <form>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">First and last name</span>
+                    </div>
+                    <input type="text" aria-label="First name" class="form-control">
+                    <input type="text" aria-label="Last name" class="form-control">
+                </div>
 
-    <form>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">First and last name</span>
-            </div>
-            <input type="text" aria-label="First name" class="form-control">
-            <input type="text" aria-label="Last name" class="form-control">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Desired Email Address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Desired Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Retype Desired Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Verify Password">
+                </div><br>
+
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Region-</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option selected>Select...</option>
+                        <option value="1">NA</option>
+                        <option value="2">EU</option>
+                        <!-- <option value="3">Three</option> -->
+                    </select>
+                </div>
+
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">By Checking This Box, I Agree to The <a href="#"><ins>
+                                <font color="red">Terms of Service</font>
+                            </ins></a></label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <!--Color needs to be white-->
+            </form>
         </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+    </div>
 
-        <div class="form-group">
-            <label for="exampleInputEmail1">Desired Email Address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="exampleInputPassword1">Desired Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
-
-        <div class="form-group">
-            <label for="exampleInputPassword1">Retype Desired Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Verify Password">
-        </div><br>
-
-        <div class="input-group mb-2">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">Region-</label>
-            </div>
-            <select class="custom-select" id="inputGroupSelect01">
-                <option selected>Select...</option>
-                <option value="1">NA</option>
-                <option value="2">EU</option>
-                <!-- <option value="3">Three</option> -->
-            </select>
-        </div>
-
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">By Checking This Box, I Agree to The <a href="#"><ins>
-                        <font color="red">Terms of Service</font>
-                    </ins></a></label>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <!--Color needs to be white-->
-    </form>
 
 
     <!-- Footer -->

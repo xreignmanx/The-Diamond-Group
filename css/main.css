@@ -1,0 +1,12 @@
+#sign-in{
+    border: 1.8px solid black;
+    border-radius: 10px;
+    margin: 10px 10px 10px 10px;
+}
+
+.current-time {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 100px 10px 0px 0px;
+    
+}
