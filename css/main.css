@@ -1,3 +1,11 @@
+body{
+    background-image: url(../images/UR12.jpg)
+}
+
+ins{
+    text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+}
+
 #sign-in{
     border: 1.8px solid black;
     border-radius: 10px;
@@ -9,4 +17,14 @@
     border-radius: 10px;
     margin: 100px 10px 0px 0px;
     
+}
+
+#carouselExampleControls{
+    object-fit: contain;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+button{
+    border-radius: 10px;
 }

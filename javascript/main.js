@@ -5,4 +5,8 @@ function updateTime(){
 $(document).ready(function(){
     setInterval(updateTime, 1000);
     
+    $("#submit").on("click", function(){
+        window.open('gamepage.html')
+    })
+    
 })
