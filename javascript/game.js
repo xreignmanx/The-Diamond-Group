@@ -1,15 +1,34 @@
-window.addEventListener("DOMContentLoaded", function() {
-    var canvas = document.getElementById("canvas");
-    var engine = new BABYLON.Engine(canvas, true);
-
 // game variables
         // ***
         // Primary resource, gold
         var gold = 0;
+        //  These are createFunctions which will be called by the mesh.action managers for each object.
+        // Handles the main gold distribution
         var createGold = function() {
                     gold++;
                     console.log(gold);
                 };
+
+        var createSoldier = function() {
+            console.log("soldier");
+        };
+        var createKnight = function() {
+            console.log("knight");
+        };
+        var createArcher = function() {
+            console.log("archer");
+        };
+
+
+
+window.addEventListener("DOMContentLoaded", function() {
+    var canvas = document.getElementById("canvas");
+    var engine = new BABYLON.Engine(canvas, true);
+
+
+
+
+
         // This creates the scene.
     var createScene = function () {
 
@@ -40,7 +59,7 @@ window.addEventListener("DOMContentLoaded", function() {
             "h" : 2
         };
         var subdivisions = {
-            'h' : 10,
+            'h' : 30,
             'w' : 10
         };
         var tiledGround = new BABYLON.Mesh.CreateTiledGround('ground1', xmin, zmin, xmax, zmax, subdivisions, precision, scene);
@@ -52,26 +71,31 @@ window.addEventListener("DOMContentLoaded", function() {
         tiledGround.position.y = -2;
 
 
-        // Shrine****
+        // ****Shrine****
+
         // Create a built-in "sphere" shape and sets it's positing above the ground. 
-        var sphere = BABYLON.MeshBuilder.CreateSphere('sphere', {segments:8, diameter:1}, scene);
-        // sphere position should be in the middle of the lower portion of the screen. Positive values corelate to lower on the screen here.
-        sphere.position.y = 1;
-        sphere.position.x = 6;
-        // creates an action manager for our sphere. This will add to the gold variable. 
-        sphere.actionManager = new BABYLON.ActionManager(scene);
-        // listen for clicks on our sphere, later to be our shrine
-        sphere.actionManager.registerAction(new BABYLON.ExecuteCodeAction({
+        var shrine = BABYLON.MeshBuilder.CreateSphere('shrine', {segments:8, diameter:1}, scene);
+        // shrine position should be in the middle of the lower portion of the screen. Positive values corelate to lower on the screen here.
+        shrine.position.y = 0;
+        shrine.position.x = 6;
+        // creates an action manager for our shrine. This will add to the gold variable. 
+        shrine.actionManager = new BABYLON.ActionManager(scene);
+        // listen for clicks on our shrine, later to be our shrine
+        shrine.actionManager.registerAction(new BABYLON.ExecuteCodeAction({
                                             trigger: BABYLON.ActionManager.OnLeftPickTrigger},
                                             function () {
                                                 createGold();
                                             }
                                             ));
 
+
+
+        //                       ****barracks****
+
         // barracks placeholder. 
         var barracks = BABYLON.MeshBuilder.CreateBox('barracks', {segments:8, diameter:1}, scene);
         
-        // sphere position should be in the middle of the lower portion of the screen. Positive values corelate to lower on the screen here.
+        // barracks position should be top left of the camp.
         barracks.position.x = 2;
         barracks.position.y = -1;
         barracks.position.z = 5;
@@ -87,10 +111,14 @@ window.addEventListener("DOMContentLoaded", function() {
                     createSoldier();
                 }
                 ));
+
+
+        //                               ****Stables****
+
         // stables placeholder. 
         var stables = BABYLON.MeshBuilder.CreateBox('stables', {segments:8, diameter:1}, scene);
         
-        // stables position should be in the middle of the lower portion of the screen. Positive values corelate to lower on the screen here.
+        // stables position should be in the lower right part of the camp
         stables.position.x = 7;
         stables.position.y = -1;
         stables.position.z = 5;
@@ -108,6 +136,8 @@ window.addEventListener("DOMContentLoaded", function() {
                 ));
 
 
+        //                      ****Fletcher****
+
         // fletcher placeholder. 
         var fletcher = BABYLON.MeshBuilder.CreateBox('fletcher', {segments:8, diameter:1}, scene);
         // fletcher position should be in the top right of the lower portion of the screen.
@@ -122,12 +152,22 @@ window.addEventListener("DOMContentLoaded", function() {
             new BABYLON.ExecuteCodeAction({
                 trigger: BABYLON.ActionManager.OnLeftPickTrigger}, 
                 function () {
-                    createKnight();
+                    createArcher();
                 }
                 ));
+                
+                
+        //                   ****Shaman****
+
+        // shaman placeholder
+        var shaman = BABYLON.MeshBuilder.CreateCylinder("shaman", {height: 1,diameter: 0, tessellation: 8}, scene);
+        // shaman position should be close to the shrine
+        shaman.position.x = 6.8;
+        shaman.position.y = 1;
+        shaman.position.z = 0.7;
+
         
-        
-        // create a camera that will rotate around the sphere, which will be the  'shrine' of our clicker game
+        // create a camera that will rotate around the shrine, which will be the  'shrine' of our clicker game
         var camera =  new BABYLON.ArcRotateCamera("arcCamera",
                 BABYLON.Tools.ToRadians(0),
                 BABYLON.Tools.ToRadians(45),
@@ -158,28 +198,22 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
 
-    // test test test test
-    //When click event is raised
+    // ************************test area***************************
+    //When click event is raised    e try to pick an object
+
     window.addEventListener("click", function (event) {
-    // We try to pick an object
+    
         var pickResult = scene.pick(scene.pointerX, scene.pointerY, scene.pointerZ);
         
 
         console.log(pickResult.pickedPoint.x);
         console.log(pickResult.pickedPoint.y);
         console.log(pickResult.pickedPoint.z);
-        // console.log(this);
-        // console.log(event);
-
+        console.log(pickResult);
+   
     });
 
-    // window.addEventListener("click", function(){
-    //     var pickResult = scene.pick(scene.pointerX,scene.pointerY);
-    //     this.console.log(pickResult);
-    // })
-    // action manager for clicks
-    // sphere.actionManager = new BABYLON.ActionManager(scene);
-    
+    // **************************************************************
 
  
 });
