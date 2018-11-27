@@ -29,7 +29,7 @@ window.addEventListener("DOMContentLoaded", function() {
         ground.position.y = -2;
         // Create a built-in "sphere" shape and sets it's positing above the ground. 
         var sphere = BABYLON.MeshBuilder.CreateSphere('sphere', {segments:16, diameter:2}, scene);
-        sphere.position.y = 1;
+        sphere.position.y = 0;
         sphere.position.x = -7;
         // creates an action manager for our sphere. This will add to the gold variable. 
         sphere.actionManager = new BABYLON.ActionManager(scene);
@@ -45,7 +45,7 @@ window.addEventListener("DOMContentLoaded", function() {
         var camera =  new BABYLON.ArcRotateCamera("arcCamera",
                 BABYLON.Tools.ToRadians(45),
                 BABYLON.Tools.ToRadians(45),
-                10.0, sphere.position,scene);
+                25.0, sphere.position,scene);
         // attaches view controls to the camera. Left off for now since we might not want the player to look around. 
         // camera.attachControl(canvas,true);
         // Create a light, and add a color to it
@@ -78,9 +78,10 @@ window.addEventListener("DOMContentLoaded", function() {
     // We try to pick an object
         var pickResult = scene.pick(scene.pointerX, scene.pointerY);
         
-        console.log(pickResult.pickedPoint.x);
-        console.log(this);
-        console.log(event);
+
+        // console.log(pickResult.pickedPoint.x);
+        // console.log(this);
+        // console.log(event);
 
     });
 
