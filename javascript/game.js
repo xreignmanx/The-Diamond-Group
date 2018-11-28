@@ -12,6 +12,7 @@
 
             
         };
+        var gateOpen = false;
         //  These are createFunctions which will be called by the mesh.action managers for each object.
         // Handles the main gold distribution
         var createGold = function() {
@@ -21,6 +22,7 @@
 
         var createSoldier = function() {
             console.log("soldier");
+            
         };
         var createKnight = function() {
             console.log("knight");
@@ -40,13 +42,6 @@
                 console.log('not enough gold, you have: ' + gold);
                 console.log('Gold Needed: ' + upgradeCost);
             }
-
-        };
-        var gateToggle = function() {
-            
-            if (gateOpen === false) {
-                gate.rotate.y += 1;
-            };
 
         };
 
@@ -208,7 +203,27 @@ window.addEventListener("DOMContentLoaded", function() {
         shaman.position.x = 7;
         shaman.position.y = 1;
         shaman.position.z = 1;
+
+        // ************ Gate ******************        
         var gate = BABYLON.MeshBuilder.CreateBox("gate", {height: 3,width: 2,diameter: 1, tessellation: 8}, scene);
+
+        // gate action manager which will handle toggling the gate open and closed
+        gate.actionManager = new BABYLON.ActionManager(scene);
+        gate.actionManager.registerAction(new BABYLON.ExecuteCodeAction({
+            trigger: BABYLON.ActionManager.OnLeftPickTrigger},
+            function() {
+                if (gateOpen === false) {
+                    gate.rotate.y += 1;
+                    gateOpen = true;
+                } else {
+                    gate.rotate.y -= 1;
+                    gateOpen = false;
+    
+                };
+            }
+
+       ));
+
         // gate position should be in the center of the farthest wall. 
         gate.position.x = 0;
         gate.position.y = -1;
