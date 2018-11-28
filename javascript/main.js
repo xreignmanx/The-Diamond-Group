@@ -11,25 +11,22 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-// firebase.auth().onAuthStateChanged(function(user){
-//     if(user){
-//         document.getElementById("submit").style.display = "block";
-//         document.getElementById("").style.display = "none";
+const auth = firebase.auth();
 
-//         var user = firebase.auth().currentUser;
+let score = 0;
+let gold = 0
 
-//         if (user != null){
-//             var email_id = user.email;
-//             var email_verified = user.emailVerified;
-//             document.getElementById("user_para").innerHTML = "Welcome User: " + email_id + "verified: " + email_verified;
+var firstName = document.getElementById("firstName");
+var lastName = document.getElementById("lastName");
+var region = document.getElementById("inputGroupSelect01");
+var userEmail = document.getElementById("exampleInputEmail1");
+var userPass = document.getElementById("exampleInputPassword1");
 
-//         }
-//     } else {
-//         document.getElementById("") = none;
-//         document.getElementById("") = none;
-//     }
-// });
-
+// var actionCodeSettings = {
+//     url: "file:///C:/Users/SoleS/Desktop/Visual%20Studio%20Code/BootCamp/Homework%20Assignments/The-Diamond-Group/index.html",
+//     // This must be true.
+//     handleCodeInApp: true
+// };
 /*
  "inputGroupSelect01" ID for region (registration)
  exampleInputPassword1 ID for password
@@ -38,88 +35,85 @@ var database = firebase.database();
  firstName ID for first Name
 */
 
-function writeRegistrationData(firstname, lastname, email, password, region) {
-    database.ref('users/' + username).push().set({
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        password: password,
-        region: region
-    });
-};
+auth.onAuthStateChanged(firebaseUser => {
+    if (firebaseUser) {
+        console.log(firebaseUser);  
+        signoutButton.classList.remove('hide');
 
-function login(){
+    } else {
+        console.log('not logged in');
+        signoutButton.classList.add('hide'); 
+
+    }
+})
+
+function login() {
+    
     var userEmail = document.getElementById("exampleInputEmail1").value;
     var userPass = document.getElementById("exampleInputPassword1").value;
 
-    firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error){
+    auth.signInWithEmailAndPassword(userEmail, userPass).catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
-
         window.alert("Error: " + errorMessage);
+         if (!error){
+             console.log("Logged in")
+         }
     });
 }
 
 function register() {
 
-    var firstName = document.getElementById("firstName").value;
-    console.log(firstName)
-    var lastName = document.getElementById("lastName").value; 
-    var region = document.getElementById("inputGroupSelect01").value 
-    var userEmail = document.getElementById("exampleInputEmail1").value;
-    var userPass = document.getElementById("exampleInputPassword1").value;
-    
-    
-    writeRegistrationData(firstName, lastName, region, userEmail, userPass)
-    
-    firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error){
+    function writeRegistrationData(firstname, lastname, email, password, region, score, gold) {
+        database.ref('users/' + firstname).push().set({
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            password: password,
+            region: region,
+            Score: score,
+            Gold_Amount: gold
+        });
+    };
+
+    writeRegistrationData(firstName.value, lastName.value, userEmail.value, userPass.value, region.value, score, gold)
+
+    firebase.auth().createUserWithEmailAndPassword(userEmail.value, userPass.value).catch(function (error) {
+        
         var errorCode = error.code;
         var errorMessage = error.message;
 
         window.alert("Error: " + errorMessage);
+        if (!error){
+            console.log("created")
+        }
     });
+
+    // firebase.auth().sendSignInLinkToEmail(userEmail.value, actionCodeSettings)
+    //     .then(function () {
+    //         // The link was successfully sent. Inform the user.
+    //         // Save the email locally so you don't need to ask the user for it again
+    //         // if they open the link on the same device.
+    //         window.localStorage.setItem('emailForSignIn', email);
+    //     })
+    //     .catch(function (error) {
+    //         // Some error occurred, you can inspect the code: error.code
+    //     });
+
+    window.open('registration_finished.html');
 }
 
-function SignOut(){
+function SignOut() {
+    console.log("Logged Out");
     firebase.auth().signOut();
+    window.open("index.html");
 }
 
-function send_verification(){
-    var user = firebase.auth().currentUser;
-    user.sendEmailVerification().then(function(){
-        window.alert("verification email sent!");
-    }).catch(function(error){
-        window.alert("there was an error");
-    });
+function updateTime() {
+    $(".current-time").html(moment().format('MMMM Do YYYY, h:mm:ss a'));
 }
 
-function updateTime(){
-    $(".current-time").html(moment().format('MMMM Do YYYY, h:mm:ss a')); 
-}
-
-// function emailAPI() {
-//     var object = $(this).attr("noattribute");
-//     var queryURL = "";
-
-//     $.ajax({
-//         url: queryURL,
-//         method: "GET"
-//     }).then(function (response) {
-//         var results = response.data;
-//         console.log(results)
-//     })
-// }
-
-$(document).ready(function(){
+$(document).ready(function () {
     setInterval(updateTime, 1000);
 
-    $("#submit").on("click", function(){
-        event.preventDefault();
-
-        register();
-        //needs user validation before actually opening the page but the conecpt is there
-
-        // window.open('gamepage.html')
-    })
-    
 })
