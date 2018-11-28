@@ -4,6 +4,14 @@
         var gold = 0;
         // Number of times the shaman has been upgraded
         var shamanLevel = 1;
+        // Gate object contains the gate toggle status
+        gateObj = {
+            gateHealth: 150,
+            // gate toggle bool
+            gateOpen: false,
+
+            
+        };
         //  These are createFunctions which will be called by the mesh.action managers for each object.
         // Handles the main gold distribution
         var createGold = function() {
@@ -21,17 +29,26 @@
             console.log("archer");
         };
         var shamanUpgrade = function() {
-            var upgradeCost = shamanLevel * 25;
+            var upgradeCost = ((shamanLevel * shamanLevel) * 25);
             // This will give the player an extra gold per click at an ever increasing cost
             if (gold >= upgradeCost) {
                 gold = gold - upgradeCost;
                 shamanLevel++;
+                console.log("You have upgraded your shaman. Shaman level: " +shamanLevel);
 
             } else { 
                 console.log('not enough gold, you have: ' + gold);
+                console.log('Gold Needed: ' + upgradeCost);
             }
 
-        }
+        };
+        var gateToggle = function() {
+            
+            if (gateOpen === false) {
+                gate.rotate.y += 1;
+            };
+
+        };
 
 
 
