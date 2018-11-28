@@ -40,8 +40,8 @@ var database = firebase.database();
 
 function writeRegistrationData(firstname, lastname, email, password, region) {
     database.ref('users/' + username).push().set({
-        firstname: firstName,
-        lastname: lastName,
+        firstname: firstname,
+        lastname: lastname,
         email: email,
         password: password,
         region: region
@@ -60,11 +60,14 @@ function login(){
     });
 }
 
-function register(){
+function register() {
 
     var firstName = document.getElementById("firstName").value;
+    console.log(firstName)
     var lastName = document.getElementById("lastName").value;
+    console.log(lastName)
     var region = document.getElementById("inputGroupSelect01").value
+    console.log(region)
     var userEmail = document.getElementById("exampleInputEmail1").value;
     var userPass = document.getElementById("exampleInputPassword1").value;
     
@@ -89,5 +92,5 @@ function send_verification(){
         window.alert("verification email sent!");
     }).catch(function(error){
         window.alert("there was an error");
-    })  ;
+    });
 }
