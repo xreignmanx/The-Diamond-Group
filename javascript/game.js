@@ -4,6 +4,15 @@
         var gold = 0;
         // Number of times the shaman has been upgraded
         var shamanLevel = 1;
+        // Gate object contains the gate toggle status
+        gateObj = {
+            gateHealth: 150,
+            // gate toggle bool
+            gateOpen: false,
+
+            
+        };
+        var gateOpen = false;
         //  These are createFunctions which will be called by the mesh.action managers for each object.
         // Handles the main gold distribution
         var createGold = function() {
@@ -13,6 +22,7 @@
 
         var createSoldier = function() {
             console.log("soldier");
+            
         };
         var createKnight = function() {
             console.log("knight");
@@ -21,17 +31,19 @@
             console.log("archer");
         };
         var shamanUpgrade = function() {
-            var upgradeCost = shamanLevel * 25;
+            var upgradeCost = ((shamanLevel * shamanLevel) * 25);
             // This will give the player an extra gold per click at an ever increasing cost
             if (gold >= upgradeCost) {
                 gold = gold - upgradeCost;
                 shamanLevel++;
+                console.log("You have upgraded your shaman. Shaman level: " +shamanLevel);
 
             } else { 
                 console.log('not enough gold, you have: ' + gold);
+                console.log('Gold Needed: ' + upgradeCost);
             }
 
-        }
+        };
 
 
 
@@ -191,7 +203,27 @@ window.addEventListener("DOMContentLoaded", function() {
         shaman.position.x = 7;
         shaman.position.y = 1;
         shaman.position.z = 1;
+
+        // ************ Gate ******************        
         var gate = BABYLON.MeshBuilder.CreateBox("gate", {height: 3,width: 2,diameter: 1, tessellation: 8}, scene);
+
+        // gate action manager which will handle toggling the gate open and closed
+        gate.actionManager = new BABYLON.ActionManager(scene);
+        gate.actionManager.registerAction(new BABYLON.ExecuteCodeAction({
+            trigger: BABYLON.ActionManager.OnLeftPickTrigger},
+            function() {
+                if (gateOpen === false) {
+                    gate.rotate.y += 1;
+                    gateOpen = true;
+                } else {
+                    gate.rotate.y -= 1;
+                    gateOpen = false;
+    
+                };
+            }
+
+       ));
+
         // gate position should be in the center of the farthest wall. 
         gate.position.x = 0;
         gate.position.y = -1;
