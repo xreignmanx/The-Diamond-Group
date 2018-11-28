@@ -2,10 +2,12 @@
         // ***
         // Primary resource, gold
         var gold = 0;
+        // Number of times the shaman has been upgraded
+        var shamanLevel = 1;
         //  These are createFunctions which will be called by the mesh.action managers for each object.
         // Handles the main gold distribution
         var createGold = function() {
-                    gold++;
+                    gold = gold + shamanLevel;
                     console.log(gold);
                 };
 
@@ -18,12 +20,27 @@
         var createArcher = function() {
             console.log("archer");
         };
+        var shamanUpgrade = function() {
+            var upgradeCost = shamanLevel * 25;
+            // This will give the player an extra gold per click at an ever increasing cost
+            if (gold >= upgradeCost) {
+                gold = gold - upgradeCost;
+                shamanLevel++;
+
+            } else { 
+                console.log('not enough gold, you have: ' + gold);
+            }
+
+        }
 
 
 
 window.addEventListener("DOMContentLoaded", function() {
     var canvas = document.getElementById("canvas");
     var engine = new BABYLON.Engine(canvas, true);
+
+
+    // config firebase for pushing high scores
 
 
 
@@ -161,10 +178,49 @@ window.addEventListener("DOMContentLoaded", function() {
 
         // shaman placeholder
         var shaman = BABYLON.MeshBuilder.CreateCylinder("shaman", {height: 1,diameter: 0, tessellation: 8}, scene);
+        // Shaman action manager which will increase the gold given by clicks at the cost of an ever increasing amount of gold.
+        shaman.actionManager = new BABYLON.ActionManager(scene);
+        shaman.actionManager.registerAction( new BABYLON.ExecuteCodeAction({
+            trigger: BABYLON.ActionManager.OnLeftPickTrigger},
+            function () { 
+                shamanUpgrade();
+            }
+        ));
+
         // shaman position should be close to the shrine
-        shaman.position.x = 6.8;
+        shaman.position.x = 7;
         shaman.position.y = 1;
-        shaman.position.z = 0.7;
+        shaman.position.z = 1;
+        var gate = BABYLON.MeshBuilder.CreateBox("gate", {height: 3,width: 2,diameter: 1, tessellation: 8}, scene);
+        // gate position should be in the center of the farthest wall. 
+        gate.position.x = 0;
+        gate.position.y = -1;
+        gate.rotation.y = 1.5;
+        gate.position.z = 0;
+        var eastWall = BABYLON.MeshBuilder.CreateBox("eastWall", {height: 1.5,width: 10,diameter: 1, tessellation: 8}, scene);
+        //east wall position should line the right of the camp. 
+        eastWall.position.x = 5;
+        eastWall.position.y = -2;
+        eastWall.position.z = 9;
+        var westWall = BABYLON.MeshBuilder.CreateBox("westWall", {height: 1.5,width: 10,diameter: 1, tessellation: 8}, scene);
+        //west wall position should line the left of the camp. 
+        westWall.position.x = 5;
+        westWall.position.y = -2;
+        westWall.position.z = -9;
+        var northEastWall = BABYLON.MeshBuilder.CreateBox("northEastWall", {height: 1.5,width: 10,diameter: 1, tessellation: 8}, scene);
+        //north wall position should line the top of the camp intersected by the gate. 
+        northEastWall.position.x = -0.5;
+        northEastWall.position.y = -2;
+        northEastWall.position.z = 5;
+        northEastWall.rotation.x = .2;
+        northEastWall.rotation.y = 1.5;
+        var northWestWall = BABYLON.MeshBuilder.CreateBox("northWestWall", {height: 1.5,width: 10,diameter: 1, tessellation: 8}, scene);
+        //north wall position should line the top of the camp intersected by the gate. 
+        northWestWall.position.x = -0.5;
+        northWestWall.position.y = -2;
+        northWestWall.position.z = -5;
+        northWestWall.rotation.x = .2;
+        northWestWall.rotation.y = 1.5;
 
         
         // create a camera that will rotate around the shrine, which will be the  'shrine' of our clicker game
@@ -201,17 +257,17 @@ window.addEventListener("DOMContentLoaded", function() {
     // ************************test area***************************
     //When click event is raised    e try to pick an object
 
-    window.addEventListener("click", function (event) {
+    // window.addEventListener("click", function (event) {
     
-        var pickResult = scene.pick(scene.pointerX, scene.pointerY, scene.pointerZ);
+    //     var pickResult = scene.pick(scene.pointerX, scene.pointerY, scene.pointerZ);
         
 
-        console.log(pickResult.pickedPoint.x);
-        console.log(pickResult.pickedPoint.y);
-        console.log(pickResult.pickedPoint.z);
-        console.log(pickResult);
+    //     console.log(pickResult.pickedPoint.x);
+    //     console.log(pickResult.pickedPoint.y);
+    //     console.log(pickResult.pickedPoint.z);
+    //     console.log(pickResult);
    
-    });
+    // });
 
     // **************************************************************
 
