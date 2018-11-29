@@ -6,14 +6,76 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Our Game</title>
     <link rel="stylesheet" href="css/game.css">
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
+    <!-- game canvas. For best results touch-action="none" -->
+    <canvas id="canvas" touch-action="none"></canvas>
 
-    <canvas id="canvas"></canvas>
+    <div id="hiScores">
+            <thead>
+                    <tr>
+                        <th  scope="col"><strong>Player</strong></th>
+                        <th  scope="col"><strong>Score</strong></th>
+                    </tr>
+            </thead>
+
+    </div>
+
+    <div id="footer">
+            <div class="row">
+                 <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                            <table>
+                                    <tr>
+                                      <th id="doorImg"></th>
+                                      <td id="doorDam"></td>
+                                    </tr>
+                                    <tr id="damWin">
+                                      <th id="shrImg"></th>
+                                      <td id="shrDam"></td>
+                                    </tr>
+                            </table>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="row" id="goldCount"></div>                        
+                        <div class="row" id="goldVal"></div>
+                    </div>
+
+                    <div class="col-md-4" id="messBrd"></div>
+                    <div class="col-md-1"> 
+                        <div class="row" id="shamImg"></div>
+                        <div class="row" id="shamLvl"></div>
+                    </div>          
+                    <div class="col-md-2">
+                        <table>
+                            <tr>
+                                <th id="blksmImg"></th>
+                                <td id="blksmLvl"></td>
+                            </tr>
+                            <tr>
+                                <th id="bldImg"></th>
+                                <td id="bldLvl"></td>
+                            </tr>
+                        </table>
+                 <div class="col-md-1"></div>
+                    </div>
+
+                </div>
+        </div>
 
 
+    <!-- jquery cdn -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <!-- PEP for mobile functionality -->
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+    <!-- BABYLON.js cdn link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/3.3.0/babylon.max.js"></script>
+    <!-- Game code link -->
     <script src="javascript/game.js"></script>
 </body>
 </html>

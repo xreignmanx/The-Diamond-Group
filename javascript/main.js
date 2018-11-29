@@ -5,6 +5,7 @@ var config = {
     projectId: "click-force",
     storageBucket: "click-force.appspot.com",
     messagingSenderId: "1011685563387"
+
 };
 
 firebase.initializeApp(config);
@@ -38,6 +39,7 @@ var actionCodeSettings = {
 
 function refresh(){
     window.parent.location = window.parent.location.href;
+
 }
 
 firebase.auth().onAuthStateChanged(firebaseUser => {
@@ -169,3 +171,4 @@ $(document).ready(function () {
 // is a firebase user.
 
 // The registration page works and if everything is there it automatically logs you in
+
