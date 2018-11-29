@@ -1,29 +1,49 @@
+// firebase database
+    var database = firebase.database();
+
+
 // game variables
         // ***
         // Primary resource, gold
         var gold = 0;
+        // total gold acumulated
+        var totalGold = 0;
         // Number of times the shaman has been upgraded
         var shamanLevel = 1;
-        // Gate object contains the gate toggle status
-        gateObj = {
-            gateHealth: 150,
-            // gate toggle bool
-            gateOpen: false,
+        // Player units
+        var playerUnits = [];
+        // Healths
+        var gateHealth = 150;
+        var shrineHealth = 50;
+        
 
-            
-        };
+
+        // Upgradables levels
+        var carpenterLevel = 1;
+        var blacksmithLevel = 1;
+
         var gateOpen = false;
         //  These are createFunctions which will be called by the mesh.action managers for each object.
         // Handles the main gold distribution
         var createGold = function() {
                     gold = gold + shamanLevel;
+                    totalGold = gold + shamanLevel;
                     console.log(gold);
                 };
+        var upgradeBuildings = function() {
+            var upgradeCost = (carpenterLevel * carpenterLevel * 175);
+            if (gold >= upgradeCost){
+                gold = gold - upgradeCost;
+                carpenterLevel++
+                console.log("Buildings Upgraded. Gold: "+ gold);
+            } else {
+                console.log("Not enough gold. You have: "+ gold);
+                console.log("You need: "+ upgradeCost);
 
-        var createSoldier = function() {
-            console.log("soldier");
-            
-        };
+            }
+        }
+
+        
         var createKnight = function() {
             console.log("knight");
         };
@@ -46,7 +66,7 @@
         };
 
 
-
+// On load event to construct the game sceen on our canvas element
 window.addEventListener("DOMContentLoaded", function() {
     var canvas = document.getElementById("canvas");
     var engine = new BABYLON.Engine(canvas, true);
@@ -62,7 +82,63 @@ window.addEventListener("DOMContentLoaded", function() {
     var createScene = function () {
 
 
-        
+        var createSoldier = function() {
+
+            console.log("soldier");
+            var soldier = new BABYLON.MeshBuilder.CreateBox('soldier', {height:.3,width:.3},scene);
+            soldier.position = new BABYLON.Vector3(0,0,2);
+            animateChar();
+            
+
+
+
+
+        };
+        var animateChar = function() {
+
+                        // animation to move soldier up the game field
+                        var animationSoldier = new BABYLON.Animation("soldieranimate", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+                        // An array with all animation keys
+                        var keys = [];
+                        //At the animation key 0, the value of x is -20
+                        keys.push({
+                            frame: 0,
+                            value: -20
+                        });
+                    
+                        //At the animation key 20, the value of x is 0
+                        keys.push({
+                            frame: 20,
+                            value: 0
+                        });
+                    
+                        //At the animation key 100, the value of x is 10
+                        keys.push({
+                            frame: 100,
+                            value: 10
+                        });
+                        
+                        animationSoldier.setKeys(keys);
+                        soldier.animations = [];
+                        soldier.animations.push(animationSoldier);
+                        scene.beginAnimation(soldier, 0, 100, true);
+                        
+            
+        }
+        var spawnEnemies = function() {
+
+            setInterval(function(){
+
+                var enemyMesh = new BABYLON.MeshBuilder.CreateBox('', {height: .25,width:.25}, scene);
+                enemyMesh.position.x = -20;
+                enemyMesh.position.y = -2;
+
+
+
+
+        }, 2500);
+    };
 
 
 
@@ -72,8 +148,13 @@ window.addEventListener("DOMContentLoaded", function() {
         scene.ambientColor = new BABYLON.Color3(1, 1, 1);
         scene.clearColor = new BABYLON.Color3.Black();        
 
-        // Create a ground for our game.
+        // giving our scene gravity
+        scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
 
+        // Enable Collisions on scene
+        scene.collisionsEnabled = true;
+        
+        // Create a ground for our game.
         // ground texture
         var grassTexture = new BABYLON.StandardMaterial('grassTexture', scene);
         grassTexture.diffuseTexture = new BABYLON.Texture("http://www.kkgaa.com/wp-content/uploads/2016/06/3-lawn-seamless-grass-texture.jpg", scene);
@@ -98,6 +179,9 @@ window.addEventListener("DOMContentLoaded", function() {
 
         // sets the ground lower than the default placement of objects.
         tiledGround.position.y = -2;
+        // Give the ground collisions
+        tiledGround.checkCollisions = true;
+
 
 
         // ****Shrine****
@@ -185,6 +269,26 @@ window.addEventListener("DOMContentLoaded", function() {
                 }
                 ));
                 
+        //                      ****carpenter****
+
+        // carpenter placeholder. 
+        var carpenter = BABYLON.MeshBuilder.CreateBox('carpenter', {segments:8, diameter:1}, scene);
+        // carpenter position should be in the top right of the lower portion of the screen.
+        carpenter.position.x = 7;
+        carpenter.position.y = -1;
+        carpenter.position.z = -3;
+
+        // placeholder carpenter action manager
+        carpenter.actionManager = new BABYLON.ActionManager(scene);
+
+        carpenter.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction({
+                trigger: BABYLON.ActionManager.OnLeftPickTrigger}, 
+                function () {
+                    upgradeBuildings();
+                }
+                ));
+                
                 
         //                   ****Shaman****
 
@@ -207,16 +311,17 @@ window.addEventListener("DOMContentLoaded", function() {
         // ************ Gate ******************        
         var gate = BABYLON.MeshBuilder.CreateBox("gate", {height: 3,width: 2,diameter: 1, tessellation: 8}, scene);
 
+
         // gate action manager which will handle toggling the gate open and closed
         gate.actionManager = new BABYLON.ActionManager(scene);
         gate.actionManager.registerAction(new BABYLON.ExecuteCodeAction({
             trigger: BABYLON.ActionManager.OnLeftPickTrigger},
             function() {
                 if (gateOpen === false) {
-                    gate.rotate.y += 1;
+                    gate.rotation.y += 1.3;
                     gateOpen = true;
                 } else {
-                    gate.rotate.y -= 1;
+                    gate.rotation.y -= -1.3;
                     gateOpen = false;
     
                 };
@@ -271,6 +376,10 @@ window.addEventListener("DOMContentLoaded", function() {
         var light2 = new BABYLON.HemisphericLight('light2', new BABYLON.Vector3(0,1,-2), scene);
         light2.diffuse = new BABYLON.Color3(0,0,0);
 
+        // move unit up
+
+
+        spawnEnemies();
         return scene;
     }
     // This is calling the scene we created
@@ -287,19 +396,19 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
     // ************************test area***************************
-    //When click event is raised    e try to pick an object
+    //When click event is raised try to pick an object
 
-    // window.addEventListener("click", function (event) {
+    window.addEventListener("click", function (event) {
     
-    //     var pickResult = scene.pick(scene.pointerX, scene.pointerY, scene.pointerZ);
+        var pickResult = scene.pick(scene.pointerX, scene.pointerY, scene.pointerZ);
         
 
-    //     console.log(pickResult.pickedPoint.x);
-    //     console.log(pickResult.pickedPoint.y);
-    //     console.log(pickResult.pickedPoint.z);
-    //     console.log(pickResult);
+        console.log(pickResult.pickedPoint.x);
+        console.log(pickResult.pickedPoint.y);
+        console.log(pickResult.pickedPoint.z);
+        console.log(pickResult);
    
-    // });
+    });
 
     // **************************************************************
 
