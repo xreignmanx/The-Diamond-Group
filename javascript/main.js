@@ -22,11 +22,12 @@ var region = document.getElementById("inputGroupSelect01");
 var userEmail = document.getElementById("exampleInputEmail1");
 var userPass = document.getElementById("exampleInputPassword1");
 
-// var actionCodeSettings = {
-//     url: "file:///C:/Users/SoleS/Desktop/Visual%20Studio%20Code/BootCamp/Homework%20Assignments/The-Diamond-Group/index.html",
-//     // This must be true.
-//     handleCodeInApp: true
-// };
+var actionCodeSettings = {
+    url: "file:///C:/Users/SoleS/Desktop/Visual%20Studio%20Code/BootCamp/Homework%20Assignments/The-Diamond-Group/index.html",
+    // This must be true.
+    handleCodeInApp: true
+};
+
 /*
  "inputGroupSelect01" ID for region (registration)
  exampleInputPassword1 ID for password
@@ -35,15 +36,26 @@ var userPass = document.getElementById("exampleInputPassword1");
  firstName ID for first Name
 */
 
-auth.onAuthStateChanged(firebaseUser => {
+function refresh(){
+    window.parent.location = window.parent.location.href;
+}
+
+firebase.auth().onAuthStateChanged(firebaseUser => {
+    console.log("auth state detected");
     if (firebaseUser) {
-        console.log(firebaseUser);  
-        signoutButton.classList.remove('hide');
+        console.log(firebaseUser.Qb.Qb);
+        console.log("logged in")  
+        $("#signoutButton").show() 
+        $("#exampleInputEmail1").remove();
+        $("#exampleInputPassword1").remove();
+        $("#signinButton").remove();
+        $("label").remove();
+        $("#signinlabel").remove();
 
     } else {
         console.log('not logged in');
-        signoutButton.classList.add('hide'); 
-
+        $("#signoutButton").hide(); 
+    
     }
 })
 
@@ -52,15 +64,20 @@ function login() {
     var userEmail = document.getElementById("exampleInputEmail1").value;
     var userPass = document.getElementById("exampleInputPassword1").value;
 
-    auth.signInWithEmailAndPassword(userEmail, userPass).catch(function (error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        window.alert("Error: " + errorMessage);
-         if (!error){
-             console.log("Logged in")
-         }
-    });
+    const promise = firebase.auth().signInWithEmailAndPassword(userEmail, userPass)//.catch(function (error) {
+
+    promise.catch(e=>console.log(e.message));
+
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        console.log("auth state detected");
+        if (firebaseUser) {
+            $("#signoutButton").html('<button class="btn btn-action hide" id="signoutButton" onclick="SignOut()">Sign Out</button>');
+        }
+    })
+    
 }
+
+
 
 function register() {
 
@@ -76,37 +93,46 @@ function register() {
         });
     };
 
-    writeRegistrationData(firstName.value, lastName.value, userEmail.value, userPass.value, region.value, score, gold)
+    var userEmail = document.getElementById("exampleInputEmail1").value;
+    var userPass = document.getElementById("exampleInputPassword1").value;
 
-    firebase.auth().createUserWithEmailAndPassword(userEmail.value, userPass.value).catch(function (error) {
-        
-        var errorCode = error.code;
-        var errorMessage = error.message;
+    writeRegistrationData(firstName.value, lastName.value, userEmail, userPass, region.value, score, gold);
+    console.log("created?")
 
-        window.alert("Error: " + errorMessage);
-        if (!error){
-            console.log("created")
+    const promise = auth.createUserWithEmailAndPassword(userEmail, userPass);
+
+    promise.catch(e=>console.log(e.message));
+
+    window.localStorage.setItem('emailForSignIn', userEmail);
+
+    window.parent.location = window.parent.location.href;
+
+    firebase.auth().sendSignInLinkToEmail(userEmail, actionCodeSettings).then(function () {
+            // The link was successfully sent. Inform the user.
+            // Save the email locally so you don't need to ask the user for it again
+            // if they open the link on the same device.
+            window.localStorage.setItem('emailForSignIn', userEmail);
+        })
+        .catch(function (error) {
+            if (!error) {
+                console.log("created");
+                window.open('registration_finished.html');
+            } else {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+    
+            window.alert("Error: " + errorMessage);
         }
     });
-
-    // firebase.auth().sendSignInLinkToEmail(userEmail.value, actionCodeSettings)
-    //     .then(function () {
-    //         // The link was successfully sent. Inform the user.
-    //         // Save the email locally so you don't need to ask the user for it again
-    //         // if they open the link on the same device.
-    //         window.localStorage.setItem('emailForSignIn', email);
-    //     })
-    //     .catch(function (error) {
-    //         // Some error occurred, you can inspect the code: error.code
-    //     });
-
+    
     window.open('registration_finished.html');
+    
 }
 
 function SignOut() {
     console.log("Logged Out");
     firebase.auth().signOut();
-    window.open("index.html");
+    window.parent.location = window.parent.location.href;
 }
 
 function updateTime() {
@@ -116,4 +142,23 @@ function updateTime() {
 $(document).ready(function () {
     setInterval(updateTime, 1000);
 
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        console.log("auth state detected");
+        if (firebaseUser) {
+            $("#play").show();
+            $("#play").on("click", function(){
+                window.parent.location = window.open("gamepage.html")
+            });
+        } else {
+            $("#play").hide();    
+        };
+    })
+    
 })
+
+
+// right now if you got to the sign in page, and try to sign in, it will sign you in but the signout button won't appear
+// you have to refresh in order for the signout button to appear, but we are trying to go to the game page if the user
+// is a firebase user.
+
+// The registration page works and if everything is there it automatically logs you in
