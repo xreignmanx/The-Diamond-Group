@@ -105,11 +105,9 @@ function register() {
 
     window.localStorage.setItem('emailForSignIn', userEmail);
 
-    window.parent.location = window.parent.location.href;
-
     firebase.auth().sendSignInLinkToEmail(userEmail, actionCodeSettings).then(function () {
             // The link was successfully sent. Inform the user.
-            // Save the email locally so you don't need to ask the user for it again
+            // Save the email locally so you don't need to ask the user for it again.
             // if they open the link on the same device.
             window.localStorage.setItem('emailForSignIn', userEmail);
         })
@@ -124,8 +122,16 @@ function register() {
             window.alert("Error: " + errorMessage);
         }
     });
+
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        console.log("auth state detected");
+        if (firebaseUser) {
+            console.log(firebaseUser.Qb.Qb);
+            window.location.replace("index.html");
+        } 
+    });
     
-    window.open('registration_finished.html');
+    // window.open('registration_finished.html');
     
 }
 
@@ -147,13 +153,14 @@ $(document).ready(function () {
         if (firebaseUser) {
             $("#play").show();
             $("#play").on("click", function(){
+                localStorage.getItem(firebaseUser.score);
+                localStorage.getItem(firebaseUser.gold);
                 window.parent.location = window.open("gamepage.html")
             });
         } else {
             $("#play").hide();    
         };
-    })
-    
+    })   
 })
 
 
