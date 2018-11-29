@@ -12,11 +12,22 @@
     <!-- game canvas. For best results touch-action="none" -->
     <canvas id="canvas" touch-action="none"></canvas>
 
+    <div id="hiScores">
+            <thead>
+                    <tr>
+                        <th  scope="col"><strong>Player</strong></th>
+                        <th  scope="col"><strong>Score</strong></th>
+                    </tr>
+            </thead>
+
+    </div>
+
     <div id="footer">
             <div class="row">
+                 <div class="col-md-1"></div>
                     <div class="col-md-2">
                             <table>
-                                    <tr id="damWin">
+                                    <tr>
                                       <th id="doorImg"></th>
                                       <td id="doorDam"></td>
                                     </tr>
@@ -26,14 +37,18 @@
                                     </tr>
                             </table>
                     </div>
-                    <div class="col-md-2" id="goldCount"></div>                     
-                    <div class="col-md-6" id="messBrd"></div>
+                    <div class="col-md-1">
+                        <div class="row" id="goldCount"></div>                        
+                        <div class="row" id="goldVal"></div>
+                    </div>
+
+                    <div class="col-md-4" id="messBrd"></div>
+                    <div class="col-md-1"> 
+                        <div class="row" id="shamImg"></div>
+                        <div class="row" id="shamLvl"></div>
+                    </div>          
                     <div class="col-md-2">
                         <table>
-                            <tr>
-                                <th id="shamImg"></th>
-                                <td id="shamLvl"></td>
-                            </tr>
                             <tr>
                                 <th id="blksmImg"></th>
                                 <td id="blksmLvl"></td>
@@ -43,7 +58,7 @@
                                 <td id="bldLvl"></td>
                             </tr>
                         </table>
-
+                 <div class="col-md-1"></div>
                     </div>
 
                 </div>
@@ -51,6 +66,7 @@
 
 
     <!-- jquery cdn -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
     <script
     src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
