@@ -12,6 +12,7 @@ table {
 tr, td, th {
     justify-content: space-around;
 }
+
 td {
     background-color: brown;
     color: black;
@@ -24,6 +25,14 @@ td {
 .footer-block {
       margin: 20px 0;
     }
+#hiScores {
+    /* position: sticky;
+    left: 0;
+    top: 15%; */
+    background: white;
+    height: 100px;
+    width: 75px;
+}
 #canvas { 
     height: 100%;
     width: 100%;
@@ -51,24 +60,25 @@ td {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    height: 70%;
 }
 #bldImg {
-    background-image: url(../css/images/building.png);
+    background-image: url(../css/images/wall3.png);
     background-size: 90% 90%; 
     background-repeat: no-repeat;
-    background-position: left;
+    background-position: center;
     background-color: brown;
-    border-radius: 15%;
+    border-radius: 15px;
 
 }
 #shamImg {
-    background-color: brown;
+    background-color: green;
     background-image: url(../css/images/cross.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     border-radius: 15px;
-
+    height: 70%;
 
 }
 #doorImg {
@@ -93,7 +103,7 @@ td {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: black;
+    background-color: brown;
     border-radius: 25px;
 }
 #messBrd {
@@ -102,12 +112,12 @@ td {
     border-radius: 15px;
     width: 90%;
     height: 100%;
-    /* justify-content: center; */
     padding: 5px;
     justify-content: space-around;
 }
-/* #damWin {
-    border-style: solid;
-    border-color: gold;
-    border-width: 3px;
-} */
+
+#shamLvl, #goldVal {
+    height: 30%;
+    background-color: brown;
+    border-radius: 15px;
+}

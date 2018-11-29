@@ -7,9 +7,13 @@
   <title>Grave Digger</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
+  
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
     crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 </head>
 
@@ -52,12 +56,15 @@
 
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h3 class="display-4">~Grave Digger~</h3><hr>
+      <h3 class="display-4">~Grave Digger~</h3>
+      <hr>
       <p class="lead"><samp>Click Force is the latest blockbuster release from gaming powerhouse The Diamond Group
-        You are given a camp to start that can hold Carpenters, Blacksmiths, Archers, Stables, Barracks, and a Shaman.
-        The goal of the game is to use these resources which you can purchase to thwart the enemies that spawn as they 
-        attempt to destroy your camp ground. Don't let them defeat you!
-      </samp></p>
+          You are given a camp to start that can hold Carpenters, Blacksmiths, Archers, Stables, Barracks, and a
+          Shaman.
+          The goal of the game is to use these resources which you can purchase to thwart the enemies that spawn as
+          they
+          attempt to destroy your camp ground. Don't let them defeat you!
+        </samp></p>
     </div>
   </div>
   <div class="row">
@@ -95,34 +102,31 @@
 
   <div class="row">
 
-    <div class="col-md-3">
-
-    </div>
+    <div class="col-md-1"></div>
     <div class="col-md-6">
       <div id="sign-in">
         <font color="red" size="2">
-          <p>~Sign In~</p>
+          <p id="signinlabel">~Sign In~</p>
         </font>
-        <form>
+        <div>
 
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Email">
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Email" display="none">
           </div>
 
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter your Password">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter your Password" display="none">
           </div>
 
-          <button type="submit" class="btn btn-primary" id="submit">Sign In</button>
+          <button  class="btn btn-primary" id="signinButton" onclick="login()">Sign In</button>
+          <button  class="btn btn-action hide" id="signoutButton" onclick="SignOut()">Sign Out</button>
 
-        </form>
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-
-    </div>
+    <div class="col-md-5"><button id="play"><ins>Press to Play</ins></button></div>
 
   </div>
   <!-- Footer -->
@@ -130,7 +134,7 @@
     <div class="container-fluid text-center text-md-left">
     </div>
     <div class="footer-copyright text-center py-3">© 2018 Copyright:
-      <a href="https://github.com/xreignmanx/The-Diamond-Group" target="_blank"> <ins>TDM</ins></a>
+      <a href="https://github.com/xreignmanx/The-Diamond-Group" target="_blank"><ins>TDM</ins></a>
     </div>
 
   </footer>
