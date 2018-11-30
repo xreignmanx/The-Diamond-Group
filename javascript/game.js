@@ -82,66 +82,88 @@ window.addEventListener("DOMContentLoaded", function() {
     var createScene = function () {
 
 
+        // holds meshes
+        var unitContainer = new BABYLON.AssetContainer(scene);
+
+
+
         var createSoldier = function() {
 
             console.log("soldier");
             var soldier = new BABYLON.MeshBuilder.CreateBox('soldier', {height:.3,width:.3},scene);
-            soldier.position = new BABYLON.Vector3(0,0,2);
-            animateChar();
+            soldier.ellipsoid = new BABYLON.Vector3(1,1,1);
+            soldier.position = new BABYLON.Vector3(1,-2,0);
+                            // animation element
+                            var animationSoldier = new BABYLON.Animation("animateSoldier", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+                            // An array with all animation keys
+                            var keys = [];
+                            //At the animation key 0, the value of x is -20
+                            keys.push({
+                                frame: 0,
+                                value: 0
+                            });
+                        
+                            //At the animation key 20, the value of x is 0
+                            keys.push({
+                                frame: 30,
+                                value: -10
+                            });
+                        
+                            //At the animation key 100, the value of x is 10
+                            keys.push({
+                                frame: 60,
+                                value: -20
+                            });
+                            
+                            animationSoldier.setKeys(keys);
+                            soldier.animations = [];
+                            soldier.animations.push(animationSoldier);
+                            scene.beginAnimation(soldier, 0, 100, true);
+                            soldier.collisionsEnabled = true;
             
-
-
-
-
         };
-        var animateChar = function() {
-
-                        // animation to move soldier up the game field
-                        var animationSoldier = new BABYLON.Animation("soldieranimate", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-
-                        // An array with all animation keys
-                        var keys = [];
-                        //At the animation key 0, the value of x is -20
-                        keys.push({
-                            frame: 0,
-                            value: -20
-                        });
-                    
-                        //At the animation key 20, the value of x is 0
-                        keys.push({
-                            frame: 20,
-                            value: 0
-                        });
-                    
-                        //At the animation key 100, the value of x is 10
-                        keys.push({
-                            frame: 100,
-                            value: 10
-                        });
-                        
-                        animationSoldier.setKeys(keys);
-                        soldier.animations = [];
-                        soldier.animations.push(animationSoldier);
-                        scene.beginAnimation(soldier, 0, 100, true);
-                        
-            
-        }
+   
         var spawnEnemies = function() {
 
             setInterval(function(){
 
-                var enemyMesh = new BABYLON.MeshBuilder.CreateBox('', {height: .25,width:.25}, scene);
+                var enemyMesh = new BABYLON.MeshBuilder.CreateBox('enemyMesh', {height: .25,width:.25}, scene);
                 enemyMesh.position.x = -20;
                 enemyMesh.position.y = -2;
 
+                // animation element
+                var animationEnemy = new BABYLON.Animation("animateEnemy", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
 
+                // An array with all animation keys
+                var keys = [];
+                //At the animation key 0, the value of x is -20
+                keys.push({
+                    frame: 0,
+                    value: -20
+                });
+            
+                //At the animation key 20, the value of x is 0
+                keys.push({
+                    frame: 25,
+                    value: 0
+                });
+            
+                //At the animation key 100, the value of x is 10
+                keys.push({
+                    frame: 100,
+                    value: 10
+                });
+                
+                animationEnemy.setKeys(keys);
+                enemyMesh.animations = [];
+                enemyMesh.animations.push(animationEnemy);
+                scene.beginAnimation(enemyMesh, 0, 100, true);
+                enemyMesh.collisionsEnabled = true;
 
 
         }, 2500);
     };
-
-
-
         
         // Creates a basic Babylon scene object
         var scene = new BABYLON.Scene(engine);
@@ -153,6 +175,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
         // Enable Collisions on scene
         scene.collisionsEnabled = true;
+
         
         // Create a ground for our game.
         // ground texture
@@ -222,6 +245,8 @@ window.addEventListener("DOMContentLoaded", function() {
                 trigger: BABYLON.ActionManager.OnLeftPickTrigger}, 
                 function () {
                     createSoldier();
+                    
+
                 }
                 ));
 
@@ -376,7 +401,16 @@ window.addEventListener("DOMContentLoaded", function() {
         var light2 = new BABYLON.HemisphericLight('light2', new BABYLON.Vector3(0,1,-2), scene);
         light2.diffuse = new BABYLON.Color3(0,0,0);
 
-        // move unit up
+
+        // ********************* SKYBOX **********************
+        // var skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size:1000.0}, scene);
+        // var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+        // skyboxMaterial.backFaceCulling = false;
+        // skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("images/spritesheet/Daylight", scene);
+        // skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+        // skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+        // skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+        // skybox.material = skyboxMaterial;
 
 
         spawnEnemies();
@@ -398,17 +432,17 @@ window.addEventListener("DOMContentLoaded", function() {
     // ************************test area***************************
     //When click event is raised try to pick an object
 
-    window.addEventListener("click", function (event) {
+    // window.addEventListener("click", function (event) {
     
-        var pickResult = scene.pick(scene.pointerX, scene.pointerY, scene.pointerZ);
+    //     var pickResult = scene.pick(scene.pointerX, scene.pointerY, scene.pointerZ);
         
 
-        console.log(pickResult.pickedPoint.x);
-        console.log(pickResult.pickedPoint.y);
-        console.log(pickResult.pickedPoint.z);
-        console.log(pickResult);
+    //     console.log(pickResult.pickedPoint.x);
+    //     console.log(pickResult.pickedPoint.y);
+    //     console.log(pickResult.pickedPoint.z);
+    //     console.log(pickResult);
    
-    });
+    // });
 
     // **************************************************************
 
