@@ -66,7 +66,7 @@ function login() {
 
     const promise = firebase.auth().signInWithEmailAndPassword(userEmail, userPass)//.catch(function (error) {
 
-    promise.catch(e=>console.log(e.message));
+    promise.catch(e=>alert(e.message));
 
     firebase.auth().onAuthStateChanged(firebaseUser => {
         console.log("auth state detected");
@@ -100,39 +100,44 @@ function register() {
     console.log("created?")
 
     const promise = auth.createUserWithEmailAndPassword(userEmail, userPass);
+    // promise.catch(e=>console.log(e.message));
+    var user = firebase.auth().currentUser;
 
-    promise.catch(e=>console.log(e.message));
+    promise.then(function(user) {
+        user.sendEmailVerification().then(function(){
+            window.alert("email sent")
+        }, function(error){
+            console.log(error.message)
+        })
+    });
 
     window.localStorage.setItem('emailForSignIn', userEmail);
 
-    firebase.auth().sendSignInLinkToEmail(userEmail, actionCodeSettings).then(function () {
-            // The link was successfully sent. Inform the user.
-            // Save the email locally so you don't need to ask the user for it again.
-            // if they open the link on the same device.
-            window.localStorage.setItem('emailForSignIn', userEmail);
-        })
-        .catch(function (error) {
-            if (!error) {
-                console.log("created");
-                window.open('registration_finished.html');
-            } else {
-            var errorCode = error.code;
-            var errorMessage = error.message;
+    // firebase.auth().sendSignInLinkToEmail(userEmail, actionCodeSettings).then(function () {
+    //         // The link was successfully sent. Inform the user.
+    //         // Save the email locally so you don't need to ask the user for it again.
+    //         // if they open the link on the same device.
+    //         window.localStorage.setItem('emailForSignIn', userEmail);
+    //     })
+    //     .catch(function (error) {
+    //         if (!error) {
+    //             console.log("created");
+    //             window.open('registration_finished.html');
+    //         } else {
+    //         var errorCode = error.code;
+    //         var errorMessage = error.message;
     
-            window.alert("Error: " + errorMessage);
-        }
-    });
+    //         window.alert("Error: " + errorMessage);
+    //     }
+    // });
 
     firebase.auth().onAuthStateChanged(firebaseUser => {
-        console.log("auth state detected");
+        
         if (firebaseUser) {
             console.log(firebaseUser.Qb.Qb);
-            window.location.replace("index.html");
+            window.location.replace("registration_finished.html");
         } 
-    });
-    
-    // window.open('registration_finished.html');
-    
+    });   
 }
 
 function SignOut() {
@@ -140,6 +145,16 @@ function SignOut() {
     firebase.auth().signOut();
     window.parent.location = window.parent.location.href;
 }
+
+// function send_verfication(){
+//     var user = firebase.auth().currentUser;
+//     user.sendEmailVerification().then(function(){
+//         window.alert("check email for verification")
+//     }).catch(function(error){
+//         let errorMessage = error.message;
+//         console.log(errorMessage);
+//     })
+// }
 
 function updateTime() {
     $(".current-time").html(moment().format('MMMM Do YYYY, h:mm:ss a'));
